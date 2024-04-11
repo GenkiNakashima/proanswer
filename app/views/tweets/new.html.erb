@@ -1,0 +1,25 @@
+
+<h3>新規Question</h3>
+<%= form_for @tweet do |f| %>
+  <div class="field">
+    <%= f.label :body,"言語"%>
+    <%= f.text_field :body, :size => 140 %>
+    <br>
+    <%= f.label :goal,"目的" %>
+    <%= f.text_field :goal, :size => 140 %>
+    <br>
+    <%= f.label :thinking,"困っている事" %>
+    <%= f.text_field :thinking, :size => 140 %>
+    <br>
+    <%= f.label :doing,"何をしているか"%>
+ 
+    <%= f.text_field :doing, :size => 140 %>
+    <br>
+    <%= f.label :image,"写真"%>
+    <%= f.file_field :images, multiple: true %>
+  </div>
+
+
+  <%= f.submit "Questionする" %>
+<% end %>
+<%= link_to "Question一覧に戻る", tweets_path %>

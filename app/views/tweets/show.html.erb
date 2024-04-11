@@ -1,0 +1,60 @@
+
+<h3>Question詳細</h3>
+<div class="tweet">
+  <h4>言語</h4>
+  <p><%= @tweet.body %></p>
+  <h4>目的</h4>
+  <p><%= @tweet.goal %></p>
+  <h4>困っている事</h4>
+  <p><%= @tweet.thinking %></p>
+  <h4>何をしているか</h4>
+  <p><%= @tweet.doing %></p>
+  <h4>写真</h4>
+  <% if @tweet.images.attached? %>
+   <% @tweet.images.each do |image| %>
+    <%= image_tag image.variant(resize: '500x500') %>
+    <% end %>
+  <% end %>
+   
+  <p><%= @tweet.created_at %></p>
+  <% if user_signed_in? %>
+      <% if current_user.already_liked?(@tweet) %>
+        <%= link_to tweet_like_path(@tweet), method: :delete do %>
+          <i class="fas fa-heart"></i><%= @tweet.likes.count %>
+        <% end %>
+      <% else %>
+        <%= link_to tweet_likes_path(@tweet), method: :post do %>
+          <i class="far fa-heart"></i><%= @tweet.likes.count %>
+        <% end %>
+      <% end %>
+    <% else %>
+    <i class="far fa-heart"></i><%= @tweet.likes.count %>
+    <% end %>
+    </br>
+  <%= link_to "編集する", edit_tweet_path(@tweet.id) %>
+</div>
+<h3>いいねしたユーザー</h3>
+<% @tweet.liked_users.each do |user| %>
+  <li><%= user.email %></li>
+<% end %>
+<div class="comment-wrapper">
+  <h3>コメント一覧</h3>
+  <% @comments.each do |c| %>
+    <div>
+      <%= c.user.email unless c.user.blank? %>
+      <br>
+      <%= c.content %>
+    </div>
+      <br>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= form_with(model: [@tweet, @comment], local: true) do |f| %>
+      <%= f.text_area :content %>
+      <%= button_tag type: "submit" do %>
+        <i class="far fa-comments"></i> コメントする
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
+<%= link_to image_tag("Frame 18.jpg", class:"images"), tweets_path %>

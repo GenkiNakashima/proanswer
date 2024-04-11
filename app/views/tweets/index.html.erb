@@ -1,0 +1,94 @@
+<%= stylesheet_link_tag "index", :media => "all" %>
+<script src="https://kit.fontawesome.com/afac4dd880.js" crossorigin="anonymous"></script>
+
+<%= link_to image_tag("Frame 13.jpg", class:"images"), destroy_user_session_path, method: :delete  %>
+<h1>ランキング（黄色線が１位）</h1>
+
+<div class="multi"
+   <% @rank_tweets.each do |t| %>
+  
+ 
+  </div>
+ 
+
+  <h4 style="display:inline">言語：</h4>
+  <%= t.body %>
+  <h4 style="display:inline"> </h4>
+  <h4 style="display:inline">困っていること:</h4>
+  <%= t.thinking %>
+  </br>
+  <%= link_to image_tag("Frame15.jpg", class:"images"), tweet_path(t.id) %>
+  <% if user_signed_in? %>
+      <% if current_user.already_liked?(t) %>
+          <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+            <i class="fas fa-heart"></i><%= t.likes.count %>
+          <% end %>
+      <% else %>
+          <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+            <i class="far fa-heart"></i><%= t.likes.count %>
+          <% end %>
+      <% end %>
+  <% else %>
+  <i class="far fa-heart"></i><%= t.likes.count %>
+  <% end %>
+  </br>
+ 
+<% end %>
+</div>
+
+<div class="ranking">
+<h1>投稿を検索（言語の検索）</h1>
+ <%= form_tag({controller:"tweets",action:"index"}, method: :get) do %>
+  <%= text_field_tag :search %>
+   <%= submit_tag '検索する'  %>
+<% end %>
+
+<%= link_to image_tag("Frame 16.jpg", class:"images"), new_tweet_path %>
+</div>
+<div class="tweets-container">
+<% if user_signed_in? %>
+  <%= link_to image_tag("Frame 17.jpg", class:"images"), user_path(current_user.id) %>
+<% end %>
+</div>
+<h3>Question一覧</h3>
+<div class="flex_test-box">
+  <% @tweets.each do |t| %>
+   
+  <div class="tweet">
+  <%= t.user.email %>
+  </br>
+  <% if t.images.attached? %>
+   <% t.images.each do |image| %>
+    <%= image_tag image.variant(resize: '300x300') %>
+    </br>
+    <% end %>
+  <% end %>
+  <%=t.image %>
+  <% if user_signed_in? %>
+      <% if current_user.already_liked?(t) %>
+          <%= link_to tweet_like_path(id: t.id, tweet_id: t.id), method: :delete do %>
+            <i class="fas fa-heart"></i><%= t.likes.count %>
+          <% end %>
+      <% else %>
+          <%= link_to tweet_likes_path(id: t.id, tweet_id: t.id), method: :post do %>
+            <i class="far fa-heart"></i><%= t.likes.count %>
+          <% end %>
+      <% end %>
+  <% else %>
+  <i class="far fa-heart"></i><%= t.likes.count %>
+  <% end %>
+
+  </br>
+    <%= t.body %>
+    </br>
+    <%= t.created_at %>
+    </br>
+    <%= link_to image_tag("Frame 6.jpg", class:"images"), tweet_path(t.id) %>
+    </br>
+    <%= link_to image_tag("Frame 8.jpg", class:"images"), edit_tweet_path(t.id)%>
+    </br>
+    <%= link_to image_tag("Frame 7.jpg", class:"images"), tweet_path(t.id), method: :delete %>
+  </div>
+  <% end %>
+</div>
+

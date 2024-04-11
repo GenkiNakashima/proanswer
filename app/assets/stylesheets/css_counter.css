@@ -1,0 +1,7 @@
+ul li {
+    counter-increment: rank;
+  }
+  
+  ul li::before {
+    content: counter(rank);
+  }
